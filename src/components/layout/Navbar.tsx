@@ -44,7 +44,7 @@ export default function Navbar() {
           <Link href="/login" className="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors px-3 py-2">
             Login
           </Link>
-          <Link href="/create" className="text-sm font-medium px-5 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 active:scale-95">
+          <Link href="/generator" className="text-sm font-medium px-5 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 active:scale-95">
             Start Creating
           </Link>
         </div>
@@ -83,7 +83,7 @@ export default function Navbar() {
             <Link href="/login" className="text-center text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>
               Login
             </Link>
-            <Link href="/create" className="text-center text-sm font-medium py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 transition-all" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link href="/generator" className="text-center text-sm font-medium py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 transition-all" onClick={() => setIsMobileMenuOpen(false)}>
               Start Creating
             </Link>
           </div>

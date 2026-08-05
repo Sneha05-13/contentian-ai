@@ -3,7 +3,7 @@ import { FaLinkedin, FaTwitter, FaGithub } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a0a0a] border-t border-white/5 text-zinc-400 pt-20 pb-10 mt-auto shadow-[0_-20px_40px_rgba(0,0,0,0.1)] dark:shadow-none">
+    <footer id="about" className="bg-[#0a0a0a] border-t border-white/5 text-zinc-400 pt-20 pb-10 mt-auto shadow-[0_-20px_40px_rgba(0,0,0,0.1)] dark:shadow-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">

@@ -34,7 +34,7 @@ export default function Hero() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link href="/create" className="w-full sm:w-auto text-center px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 active:scale-95">
+              <Link href="/generator" className="w-full sm:w-auto text-center px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 active:scale-95">
                 Start Creating
               </Link>
               <Link href="/#features" className="w-full sm:w-auto text-center px-8 py-4 rounded-full bg-white dark:bg-white/5 hover:bg-zinc-50 dark:hover:bg-white/10 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 font-medium shadow-sm transition-all hover:scale-105 active:scale-95">
