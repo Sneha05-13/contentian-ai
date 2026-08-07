@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Sparkles, UploadCloud, Copy, Check, ImageIcon } from "lucide-react";
+import { Sparkles, UploadCloud, Copy, Check, ImageIcon, Settings } from "lucide-react";
 import { FaPinterest, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export default function GeneratorPage() {
@@ -11,6 +11,13 @@ export default function GeneratorPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  
+  // Generation Settings State
+  const [tone, setTone] = useState("Professional");
+  const [length, setLength] = useState("Medium");
+  const [audience, setAudience] = useState("General");
+  const [language, setLanguage] = useState("English");
+  const [creativity, setCreativity] = useState(5);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [copiedSection, setCopiedSection] = useState<string | null>(null);
@@ -133,95 +140,180 @@ export default function GeneratorPage() {
           {/* Main Workspace */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             
-            {/* LEFT CARD: Create Content */}
-            <div className="flex flex-col gap-8 p-6 sm:p-8 bg-white dark:bg-zinc-900/40 rounded-[2rem] shadow-sm dark:shadow-none border border-zinc-200/60 dark:border-white/10">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/5 pb-4">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Create Content</h2>
-              </div>
+            {/* LEFT COLUMN */}
+            <div className="flex flex-col gap-6">
+              
+              {/* CARD 1: Create Content */}
+              <div className="flex flex-col gap-8 p-6 sm:p-8 bg-white dark:bg-zinc-900/40 rounded-[2rem] shadow-sm dark:shadow-none border border-zinc-200/60 dark:border-white/10">
+                <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/5 pb-4">
+                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Create Content</h2>
+                </div>
 
-              {/* 1. Image Upload Area */}
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                  1. Image (Optional)
-                </label>
-                <div className="relative group">
-                  <label htmlFor="image-upload" className={`flex flex-col items-center justify-center w-full h-48 sm:h-56 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${imagePreview ? 'border-indigo-300 dark:border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/5' : 'border-zinc-300 dark:border-white/20 bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:border-indigo-400 dark:hover:border-indigo-500/50'}`}>
-                    {imagePreview ? (
-                      <div className="relative w-full h-full p-2">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={imagePreview} alt="Preview" className="w-full h-full object-contain rounded-xl" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center gap-3">
-                          <p className="text-white font-medium flex items-center gap-2">
-                            <UploadCloud className="w-5 h-5" /> Change Image
-                          </p>
-                          <button
-                            onClick={handleRemoveImage}
-                            className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
-                          >
-                            Remove Image
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6 text-zinc-500 dark:text-zinc-400">
-                        <div className="w-12 h-12 mb-3 rounded-full bg-white dark:bg-zinc-800 shadow-sm flex items-center justify-center">
-                          <ImageIcon className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />
-                        </div>
-                        <p className="mb-1 text-sm font-semibold">Upload your image</p>
-                        <p className="text-xs">PNG, JPG or WEBP (MAX. 5MB)</p>
-                      </div>
-                    )}
-                    <input id="image-upload" type="file" className="hidden" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={handleImageUpload} />
+                {/* 1. Image Upload Area */}
+                <div className="flex flex-col gap-3">
+                  <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                    1. Image (Optional)
                   </label>
+                  <div className="relative group">
+                    <label htmlFor="image-upload" className={`flex flex-col items-center justify-center w-full h-48 sm:h-56 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${imagePreview ? 'border-indigo-300 dark:border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/5' : 'border-zinc-300 dark:border-white/20 bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:border-indigo-400 dark:hover:border-indigo-500/50'}`}>
+                      {imagePreview ? (
+                        <div className="relative w-full h-full p-2">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={imagePreview} alt="Preview" className="w-full h-full object-contain rounded-xl" />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center gap-3">
+                            <p className="text-white font-medium flex items-center gap-2">
+                              <UploadCloud className="w-5 h-5" /> Change Image
+                            </p>
+                            <button
+                              onClick={handleRemoveImage}
+                              className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
+                            >
+                              Remove Image
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6 text-zinc-500 dark:text-zinc-400">
+                          <div className="w-12 h-12 mb-3 rounded-full bg-white dark:bg-zinc-800 shadow-sm flex items-center justify-center">
+                            <ImageIcon className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />
+                          </div>
+                          <p className="mb-1 text-sm font-semibold">Upload your image</p>
+                          <p className="text-xs">PNG, JPG or WEBP (MAX. 5MB)</p>
+                        </div>
+                      )}
+                      <input id="image-upload" type="file" className="hidden" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={handleImageUpload} />
+                    </label>
+                  </div>
+                </div>
+
+                {/* 2. Description Input */}
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="description" className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                    2. Idea Description
+                  </label>
+                  <textarea
+                    id="description"
+                    rows={4}
+                    className="w-full p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none transition-all text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500"
+                    placeholder="Describe your content idea..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
                 </div>
               </div>
 
-              {/* 2. Description Input */}
-              <div className="flex flex-col gap-3">
-                <label htmlFor="description" className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                  2. Idea Description
-                </label>
-                <textarea
-                  id="description"
-                  rows={4}
-                  className="w-full p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none transition-all text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500"
-                  placeholder="Describe your content idea..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-
-              {/* 3. Platform Selector */}
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                  3. Select Platform
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {platforms.map((platform) => {
-                    const Icon = platform.icon;
-                    const isSelected = selectedPlatform === platform.id;
-                    return (
-                      <button
-                        key={platform.id}
-                        onClick={() => setSelectedPlatform(platform.id)}
-                        className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border transition-all duration-200 ${
-                          isSelected
-                            ? "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-500 shadow-sm shadow-indigo-500/20"
-                            : "bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-white/10 hover:border-indigo-300 dark:hover:border-white/20 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                        }`}
-                      >
-                        <Icon className={`w-6 h-6 ${isSelected ? platform.color : "text-zinc-400 dark:text-zinc-500"}`} />
-                        <span className={`text-xs font-semibold ${isSelected ? "text-indigo-700 dark:text-indigo-300" : "text-zinc-600 dark:text-zinc-400"}`}>
-                          {platform.id}
-                        </span>
-                      </button>
-                    );
-                  })}
+              {/* CARD 2: Generation Settings */}
+              <div className="flex flex-col gap-6 p-6 sm:p-8 bg-white dark:bg-zinc-900/40 rounded-[2rem] shadow-sm dark:shadow-none border border-zinc-200/60 dark:border-white/10">
+                <div className="flex items-center gap-2 border-b border-zinc-100 dark:border-white/5 pb-4">
+                  <Settings className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
+                  <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Generation Settings</h2>
                 </div>
+
+                {/* Platform Selector */}
+                <div className="flex flex-col gap-3">
+                  <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                    Platform
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {platforms.map((platform) => {
+                      const Icon = platform.icon;
+                      const isSelected = selectedPlatform === platform.id;
+                      return (
+                        <button
+                          key={platform.id}
+                          onClick={() => setSelectedPlatform(platform.id)}
+                          className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border transition-all duration-200 ${
+                            isSelected
+                              ? "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-500 shadow-sm shadow-indigo-500/20"
+                              : "bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-white/10 hover:border-indigo-300 dark:hover:border-white/20 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                          }`}
+                        >
+                          <Icon className={`w-5 h-5 ${isSelected ? platform.color : "text-zinc-400 dark:text-zinc-500"}`} />
+                          <span className={`text-xs font-semibold ${isSelected ? "text-indigo-700 dark:text-indigo-300" : "text-zinc-600 dark:text-zinc-400"}`}>
+                            {platform.id}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Tone */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Tone</label>
+                    <select
+                      value={tone}
+                      onChange={(e) => setTone(e.target.value)}
+                      className="w-full p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm text-zinc-900 dark:text-white"
+                    >
+                      {["Professional", "Casual", "Friendly", "Persuasive", "Funny"].map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Content Length */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Content Length</label>
+                    <select
+                      value={length}
+                      onChange={(e) => setLength(e.target.value)}
+                      className="w-full p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm text-zinc-900 dark:text-white"
+                    >
+                      {["Short", "Medium", "Long"].map(l => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Target Audience */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Target Audience</label>
+                    <select
+                      value={audience}
+                      onChange={(e) => setAudience(e.target.value)}
+                      className="w-full p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm text-zinc-900 dark:text-white"
+                    >
+                      {["General", "Students", "Professionals", "Business Owners", "Creators", "Developers"].map(a => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Language */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Language</label>
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      className="w-full p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm text-zinc-900 dark:text-white"
+                    >
+                      {["English", "Hindi", "Hinglish"].map(l => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Creativity Slider */}
+                <div className="flex flex-col gap-3 pt-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Creativity</label>
+                    <span className="text-xs font-medium px-2 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-md">
+                      {creativity} / 10
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={creativity}
+                    onChange={(e) => setCreativity(Number(e.target.value))}
+                    className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                    <span>More Accurate</span>
+                    <span>More Creative</span>
+                  </div>
+                </div>
+
               </div>
 
-              {/* 4. Generate Button */}
-              <div className="pt-2">
+              {/* Generate Action Area */}
+              <div className="flex flex-col gap-4">
                 <button
                   onClick={handleGenerate}
                   disabled={!description.trim() && !imagePreview}
@@ -246,15 +338,14 @@ export default function GeneratorPage() {
                     </>
                   )}
                 </button>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium">
+                    {error}
+                  </div>
+                )}
               </div>
-
-              {/* Error Message */}
-              {error && (
-                <div className="p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium">
-                  {error}
-                </div>
-              )}
-
             </div>
 
             {/* RIGHT CARD: Generated Content */}
