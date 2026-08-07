@@ -1,10 +1,11 @@
 import Groq from "groq-sdk";
 import { NextResponse } from "next/server";
+import { APIRequest, ImageAnalysis } from "@/types/generator";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // Reusable function for image analysis
-async function analyzeImage(image: { data: string; mimeType: string }) {
+async function analyzeImage(image: { data: string; mimeType: string }): Promise<ImageAnalysis> {
   // Placeholder mock data for now.
   // This can later be replaced with a real Vision AI API call.
   return {
@@ -20,7 +21,7 @@ async function analyzeImage(image: { data: string; mimeType: string }) {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const body: APIRequest = await req.json();
     const { prompt, platform, image } = body;
 
     if ((!prompt && !image) || !platform) {
