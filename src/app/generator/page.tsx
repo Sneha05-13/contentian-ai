@@ -9,6 +9,7 @@ import { FaPinterest, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 export default function GeneratorPage() {
   const [description, setDescription] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -31,12 +32,30 @@ export default function GeneratorPage() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        setError("Please upload a valid image file (JPG, PNG, or WEBP).");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError("File size must be less than 5MB.");
+        return;
+      }
+
+      setError(null);
+      setSelectedImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleRemoveImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setSelectedImage(null);
+    setImagePreview(null);
   };
 
   const handleGenerate = async () => {
@@ -131,10 +150,16 @@ export default function GeneratorPage() {
                       <div className="relative w-full h-full p-2">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={imagePreview} alt="Preview" className="w-full h-full object-contain rounded-xl" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center gap-3">
                           <p className="text-white font-medium flex items-center gap-2">
                             <UploadCloud className="w-5 h-5" /> Change Image
                           </p>
+                          <button
+                            onClick={handleRemoveImage}
+                            className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
+                          >
+                            Remove Image
+                          </button>
                         </div>
                       </div>
                     ) : (
@@ -146,7 +171,7 @@ export default function GeneratorPage() {
                         <p className="text-xs">PNG, JPG or WEBP (MAX. 5MB)</p>
                       </div>
                     )}
-                    <input id="image-upload" type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                    <input id="image-upload" type="file" className="hidden" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={handleImageUpload} />
                   </label>
                 </div>
               </div>
