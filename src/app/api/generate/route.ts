@@ -3,14 +3,29 @@ import { NextResponse } from "next/server";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+// Reusable function for image analysis
+async function analyzeImage(image: { data: string; mimeType: string }) {
+  // Placeholder mock data for now.
+  // This can later be replaced with a real Vision AI API call.
+  return {
+    scene: "Cozy coffee shop",
+    objects: ["Coffee cup", "laptop", "notebook"],
+    colors: ["Brown", "beige"],
+    mood: "Warm, aesthetic",
+    style: "Minimal",
+    audience: "Professionals, creatives",
+    keywords: ["coffee", "work", "aesthetic"]
+  };
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { prompt, platform } = body;
+    const { prompt, platform, image } = body;
 
-    if (!prompt || !platform) {
+    if ((!prompt && !image) || !platform) {
       return NextResponse.json(
-        { error: "Prompt and platform are required." },
+        { error: "Prompt (or image) and platform are required." },
         { status: 400 }
       );
     }
@@ -21,6 +36,24 @@ export async function POST(req: Request) {
         { error: "Server configuration error. API key missing." },
         { status: 500 }
       );
+    }
+
+    let finalPromptContent = `Platform: ${platform}\n\n`;
+
+    if (image) {
+      const imageAnalysis = await analyzeImage(image);
+      finalPromptContent += `Image Analysis:\n`;
+      finalPromptContent += `- Scene: ${imageAnalysis.scene}\n`;
+      finalPromptContent += `- Objects: ${imageAnalysis.objects.join(", ")}\n`;
+      finalPromptContent += `- Mood: ${imageAnalysis.mood}\n`;
+      finalPromptContent += `- Colors: ${imageAnalysis.colors.join(", ")}\n`;
+      finalPromptContent += `- Style: ${imageAnalysis.style}\n\n`;
+    }
+
+    if (prompt) {
+      finalPromptContent += `User Prompt:\n"${prompt}"`;
+    } else {
+      finalPromptContent += `User Prompt:\n"Generate content based on the image analysis."`;
     }
 
     const systemPrompt = `You are Contentian AI.
@@ -55,7 +88,7 @@ Rules:
         },
         {
           role: "user",
-          content: `Platform: ${platform}\n\nContent Idea: ${prompt}`,
+          content: finalPromptContent,
         }
       ],
       model: "llama-3.1-8b-instant",
