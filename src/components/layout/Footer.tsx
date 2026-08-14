@@ -54,6 +54,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/ai-hub" className="hover:text-indigo-400 transition-colors">
+                  AI Hub
+                </Link>
+              </li>
+              <li>
                 <span className="inline-flex items-center gap-2 cursor-not-allowed opacity-60">
                   Pricing <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-white/10 text-white">Coming Soon</span>
                 </span>

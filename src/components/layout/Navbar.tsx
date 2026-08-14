@@ -36,6 +36,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">Home</Link>
           <Link href="/#features" className="hover:text-black dark:hover:text-white transition-colors">Features</Link>
           <Link href="/#how-it-works" className="hover:text-black dark:hover:text-white transition-colors">How It Works</Link>
+          <Link href="/ai-hub" className="hover:text-black dark:hover:text-white transition-colors">AI Hub</Link>
           <Link href="/#about" className="hover:text-black dark:hover:text-white transition-colors">About</Link>
         </nav>
 
@@ -77,6 +78,7 @@ export default function Navbar() {
           <Link href="/" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
           <Link href="/#features" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Features</Link>
           <Link href="/#how-it-works" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>How It Works</Link>
+          <Link href="/ai-hub" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>AI Hub</Link>
           <Link href="/#about" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
           
           <div className="pt-4 flex flex-col gap-3 border-t border-zinc-200/20 dark:border-white/10">
