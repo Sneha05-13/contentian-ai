@@ -15,8 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ai-hub/tools',
     '/ai-hub/guides',
     '/ai-hub/experiences',
-    '/about',
-    '/features',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
