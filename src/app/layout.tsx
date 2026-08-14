@@ -14,8 +14,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Contentian - AI Content Creation Platform",
-  description: "Create social media titles, captions, descriptions and hashtags with AI.",
+  metadataBase: new URL('https://contentian-ai.vercel.app'),
+  title: "Contentian — AI Content Creation Platform",
+  description: "Create platform-ready social media content with AI. Generate titles, captions, descriptions and hashtags for Pinterest, Instagram, LinkedIn and more.",
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Contentian — AI Content Creation Platform',
+    description: 'Create platform-ready social media content with AI. Generate titles, captions, descriptions and hashtags for Pinterest, Instagram, LinkedIn and more.',
+    url: 'https://contentian-ai.vercel.app',
+    siteName: 'Contentian',
+    locale: 'en_US',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
