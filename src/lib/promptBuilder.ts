@@ -66,16 +66,45 @@ export function buildPrompt(params: BuildPromptParams): string {
   // 7. Content length
   prompt += `--- CONTENT LENGTH ---\n${contentLength}\n\n`;
 
+  let jsonFormat = "";
+  switch (platform) {
+    case "Pinterest":
+      jsonFormat = `{\n  "seoTitle": "string",\n  "pinDescription": "string",\n  "keywords": "comma separated string",\n  "hashtags": ["string"],\n  "pinTips": "string"\n}`;
+      break;
+    case "Instagram":
+      jsonFormat = `{\n  "hook": "string",\n  "caption": "string",\n  "cta": "string",\n  "hashtags": ["string"]\n}`;
+      break;
+    case "LinkedIn":
+      jsonFormat = `{\n  "headline": "string",\n  "professionalPost": "string",\n  "cta": "string",\n  "hashtags": ["string"]\n}`;
+      break;
+    case "Threads":
+      jsonFormat = `{\n  "mainPost": "string",\n  "alternativeVersion": "string",\n  "hashtags": ["string"]\n}`;
+      break;
+    case "Twitter/X":
+      jsonFormat = `{\n  "tweet": "string",\n  "alternativeTweet": "string",\n  "hashtags": ["string"]\n}`;
+      break;
+    case "Facebook":
+      jsonFormat = `{\n  "post": "string",\n  "cta": "string",\n  "hashtags": ["string"]\n}`;
+      break;
+    default:
+      jsonFormat = `{\n  "title": "string",\n  "description": "string",\n  "caption": "string",\n  "hashtags": ["string"]\n}`;
+  }
+
   // 8. JSON response instructions
   prompt += `--- OUTPUT FORMAT ---\n`;
+  prompt += `You MUST return exactly 3 variations of the content.\n`;
+  prompt += `- Variation 1: Professional Tone\n`;
+  prompt += `- Variation 2: Creative Tone\n`;
+  prompt += `- Variation 3: Viral Tone\n\n`;
   prompt += `You MUST return only valid JSON.\n`;
   prompt += `No markdown wrappers. No explanations.\n\n`;
   prompt += `JSON structure:\n`;
   prompt += `{\n`;
-  prompt += `  "title": "string",\n`;
-  prompt += `  "description": "string",\n`;
-  prompt += `  "caption": "string",\n`;
-  prompt += `  "hashtags": ["string"]\n`;
+  prompt += `  "versions": [\n`;
+  prompt += `    ${jsonFormat.replace(/\n/g, "\n    ")},\n`;
+  prompt += `    ${jsonFormat.replace(/\n/g, "\n    ")},\n`;
+  prompt += `    ${jsonFormat.replace(/\n/g, "\n    ")}\n`;
+  prompt += `  ]\n`;
   prompt += `}\n\n`;
 
   prompt += `Rules:\n`;

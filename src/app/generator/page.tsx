@@ -35,7 +35,7 @@ export default function GeneratorPage() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/xxpng', 'image/webp'];
       if (!validTypes.includes(file.type)) {
         setError("Please upload a valid image file (JPG, PNG, or WEBP).");
         return;
@@ -74,7 +74,18 @@ export default function GeneratorPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: description,
-          platform: selectedPlatform
+          platform: selectedPlatform,
+          tone,
+          length,
+          audience,
+          language,
+          creativity,
+          ...(imagePreview && selectedImage ? {
+            image: {
+              data: imagePreview.split(',')[1],
+              mimeType: selectedImage.type
+            }
+          } : {})
         })
       });
 
@@ -84,19 +95,7 @@ export default function GeneratorPage() {
         throw new Error(data.error || "Failed to generate content");
       }
 
-      let hashtagsDisplay = "";
-      if (Array.isArray(data.hashtags)) {
-        hashtagsDisplay = data.hashtags.join(" ");
-      } else if (typeof data.hashtags === "string") {
-        hashtagsDisplay = data.hashtags;
-      }
-
-      setGeneratedContent({
-        title: data.title || "",
-        description: data.description || "",
-        caption: data.caption || "",
-        hashtags: hashtagsDisplay,
-      });
+      setGeneratedContent(data);
       
       setHasGenerated(true);
     } catch (err: any) {

@@ -1,4 +1,4 @@
-import { FaPinterest, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaPinterest, FaInstagram, FaLinkedin, FaTwitter, FaFacebook, FaCommentDots } from "react-icons/fa";
 import { Platform } from "@/types/generator";
 
 interface PlatformSelectorProps {
@@ -12,6 +12,8 @@ export default function PlatformSelector({ selectedPlatform, setSelectedPlatform
     { id: "Instagram", icon: FaInstagram, color: "text-[#E1306C]" },
     { id: "LinkedIn", icon: FaLinkedin, color: "text-[#0A66C2]" },
     { id: "Twitter/X", icon: FaTwitter, color: "text-zinc-900 dark:text-white" },
+    { id: "Threads", icon: FaCommentDots, color: "text-zinc-900 dark:text-white" },
+    { id: "Facebook", icon: FaFacebook, color: "text-[#1877F2]" },
   ];
 
   return (
@@ -19,7 +21,7 @@ export default function PlatformSelector({ selectedPlatform, setSelectedPlatform
       <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
         Platform
       </label>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {platforms.map((platform) => {
           const Icon = platform.icon;
           const isSelected = selectedPlatform === platform.id;

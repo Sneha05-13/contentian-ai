@@ -1,6 +1,6 @@
-import { GeneratedContent } from "@/types/generator";
+import { GeneratedContent, Platform } from "@/types/generator";
 
-export function parseAIResponse(response: string): GeneratedContent {
+export function parseAIResponse(response: string, platform: Platform): GeneratedContent {
   if (!response || typeof response !== "string") {
     throw new Error("Received empty or invalid response from AI.");
   }
@@ -28,53 +28,59 @@ export function parseAIResponse(response: string): GeneratedContent {
   }
 
   // 3. Validate required fields
-  if (!parsed || typeof parsed !== "object") {
-    throw new Error("The AI response format was unexpected. Please try again.");
+  if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.versions)) {
+    throw new Error("The AI response format was unexpected. Expected versions array. Please try again.");
   }
 
-  const { title, description, caption, hashtags } = parsed;
-
-  if (typeof title !== "string") {
-    throw new Error("Missing or invalid 'title' in AI response.");
-  }
-
-  if (typeof description !== "string") {
-    throw new Error("Missing or invalid 'description' in AI response.");
-  }
-
-  if (typeof caption !== "string") {
-    throw new Error("Missing or invalid 'caption' in AI response.");
-  }
-
-  // Handle hashtags that might be a string or array of strings
-  let finalHashtags = "";
-  if (Array.isArray(hashtags)) {
-    finalHashtags = hashtags
-      .map(tag => typeof tag === "string" ? tag.trim() : "")
-      .filter(Boolean)
-      .join(" ");
-  } else if (typeof hashtags === "string") {
-    finalHashtags = hashtags.trim();
-  } else {
-    throw new Error("Missing or invalid 'hashtags' in AI response.");
-  }
-
-  // Ensure hashtags start with # if they don't already
-  if (finalHashtags) {
-    finalHashtags = finalHashtags
-      .split(/\s+/)
-      .map(tag => {
-        if (!tag) return "";
-        return tag.startsWith("#") ? tag : `#${tag}`;
-      })
-      .filter(Boolean)
-      .join(" ");
-  }
-
-  return {
-    title,
-    description,
-    caption,
-    hashtags: finalHashtags,
+  const requiredFieldsByPlatform: Record<string, string[]> = {
+    Pinterest: ["seoTitle", "pinDescription", "hashtags"],
+    Instagram: ["hook", "caption", "hashtags"],
+    LinkedIn: ["headline", "professionalPost", "hashtags"],
+    Threads: ["mainPost", "alternativeVersion", "hashtags"],
+    "Twitter/X": ["tweet", "alternativeTweet", "hashtags"],
+    Facebook: ["post", "hashtags"],
   };
+
+  const requiredFields = requiredFieldsByPlatform[platform as string] || ["title", "description", "caption", "hashtags"];
+
+  parsed.versions.forEach((version: any, index: number) => {
+    if (!version || typeof version !== "object") {
+      throw new Error(`Version ${index + 1} is invalid.`);
+    }
+
+    for (const field of requiredFields) {
+      if (version[field] === undefined || version[field] === null) {
+        throw new Error(`Missing or invalid '${field}' in AI response for version ${index + 1}.`);
+      }
+    }
+
+    // Handle hashtags that might be a string or array of strings
+    let finalHashtags = "";
+    if (Array.isArray(version.hashtags)) {
+      finalHashtags = version.hashtags
+        .map((tag: any) => typeof tag === "string" ? tag.trim() : "")
+        .filter(Boolean)
+        .join(" ");
+    } else if (typeof version.hashtags === "string") {
+      finalHashtags = version.hashtags.trim();
+    } else {
+      throw new Error(`Missing or invalid 'hashtags' in AI response for version ${index + 1}.`);
+    }
+
+    // Ensure hashtags start with # if they don't already
+    if (finalHashtags) {
+      finalHashtags = finalHashtags
+        .split(/\s+/)
+        .map(tag => {
+          if (!tag) return "";
+          return tag.startsWith("#") ? tag : `#${tag}`;
+        })
+        .filter(Boolean)
+        .join(" ");
+    }
+    
+    version.hashtags = finalHashtags;
+  });
+
+  return parsed as GeneratedContent;
 }

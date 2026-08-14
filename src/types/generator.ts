@@ -1,11 +1,8 @@
 export interface GeneratedContent {
-  title: string;
-  description: string;
-  caption: string;
-  hashtags: string;
+  versions: Record<string, string>[];
 }
 
-export type Platform = "Pinterest" | "Instagram" | "LinkedIn" | "Twitter/X" | string;
+export type Platform = "Pinterest" | "Instagram" | "LinkedIn" | "Twitter/X" | "Threads" | "Facebook" | string;
 export type Tone = "Professional" | "Casual" | "Friendly" | "Persuasive" | "Funny" | string;
 export type ContentLength = "Short" | "Medium" | "Long" | string;
 export type TargetAudience = "General" | "Students" | "Professionals" | "Business Owners" | "Creators" | "Developers" | string;
@@ -32,6 +29,11 @@ export interface GeneratorSettings {
 export interface APIRequest {
   prompt: string;
   platform: Platform;
+  tone: Tone;
+  length: ContentLength;
+  audience: TargetAudience;
+  language: Language;
+  creativity: number;
   image?: {
     data: string;
     mimeType: string;
